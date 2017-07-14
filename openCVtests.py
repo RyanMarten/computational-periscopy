@@ -3,7 +3,7 @@ import cv2
 from matplotlib import pyplot as plt
 
 #reading an image
-img = cv2.imread('testimages/_DSC1641.ARW.tiff', cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
+img = cv2.imread('../rawimages/_DSC1641.ARW.tiff', cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
 print img.dtype #should be uint16 - 16 bits per color channel for HDR later
 
 #displaying an image
@@ -23,8 +23,7 @@ img2 = cv2.imread('testimages/redpanda.jpg')
 b, g, r = cv2.split(img2)
 img3 = cv2.merge([r,g,b])
 #can also do img3 = img2[:,:,::-1]
-
-plt.imshow(img3)
+plt.imshow(np.hstack([img3, img2]))
 #removes tick marks
 plt.xticks([]), plt.yticks([]) 
 plt.show()
