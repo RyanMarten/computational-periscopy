@@ -23,7 +23,7 @@ blur = cv2.GaussianBlur(img, (5,5), 0)
 gray = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
 
 #detect circles in the image
-circles = cv2.HoughCircles(gray, cv2.cv.CV_HOUGH_GRADIENT, 1, 300, param1=100, param2=50, minRadius=10, maxRadius=0)
+circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 300, param1=100, param2=50, minRadius=10, maxRadius=0)
 #for iphone photos, the threshold 200 works well, 
 #with the sony, the param1 threshold 100 works well
 
