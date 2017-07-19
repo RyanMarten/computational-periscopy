@@ -51,9 +51,14 @@ def cht(img):
 	if(gray.dtype == "uint16"):
 		gray = (gray/256).astype('uint8')
 
+	#choose a upper threshold value for the CHT's canny edge detection based off of median pixel intensity
+	v = np.median(gray)
+	sigma = 0.25
+	upper = int(min(255, (1.0 + sigma) * v))
+
 	print "Detecting circles..."
 	#detect circles in the image
-	circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 300, param1=20, param2=50, minRadius=10, maxRadius=0)
+	circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 300, param1=upper, param2=50, minRadius=10, maxRadius=0)
 	#make sure some circles are found
 	if circles is not None:
 		#convert the (x,y) coordinates and radius of the circles to integers
@@ -87,9 +92,8 @@ def cht(img):
 		print "No circles found"
 		quit()
 
-def generateSpheres(filename):
-	print "Generating spheres from {}".format(filename)
-	img = cv2.imread(filename, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
+def generateSpheres(hdr, fnout):
+	img = cv2.imread(hdr, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
 	if img is None:
 		print "File not found"
 		quit()
@@ -98,17 +102,18 @@ def generateSpheres(filename):
 	#unwrap the image to equirectagular (with a width twice as large)
 	unwrapped = unwrap(sphere, sphere.shape[0], 2*sphere.shape[1], cv2.INTER_LINEAR)
 	#write the unwrapped image out
-	fnout = os.path.splitext(filename)[0] + "_sphere" + os.path.splitext(filename)[1]
 	cv2.imwrite(fnout, unwrapped)
 	print "Wrote equirectangular image to {}".format(fnout)
 	return unwrapped
-	
-
 
 if __name__ == "__main__":
 	#construct the argument parser and parse the arguments
 	ap = argparse.ArgumentParser()
 	ap.add_argument("-i", "--image", required = True, help = "Path to the image")
 	args = ap.parse_args()
-	cv2.imshow("unwrapped", generateSpheres(args.image))
+	fnout = os.path.splitext(filename)[0] + "_sphere" + os.path.splitext(filename)[1]
+
+	print "Generating spheres from {}".format(args.image)
+	unwrapped = generateSpheres(args.image, fnout)
+	cv2.imshow("unwrapped", unwrapped)
 	cv2.waitKey(0)
