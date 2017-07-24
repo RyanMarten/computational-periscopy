@@ -95,7 +95,7 @@ def cht(img):
 def generateSpheres(hdr, fnout):
 	img = cv2.imread(hdr, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
 	if img is None:
-		print "File not found"
+		print "Image file {} does not exist".format(hdr)
 		quit()
 	#isolate the sphere from the rest of the image
 	sphere = cht(img)

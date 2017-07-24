@@ -19,10 +19,7 @@ def getNumberSuffix(fp):
 
 def getOutputName(hdrset):
 	hdrset.sort()
-	name = getBaseNameNoExt(hdrset[0]) 
-	for i in range(1,len(hdrset)-1):
-		name += "-" + getNumberSuffix(hdrset[i])
-	return name
+	return getBaseNameNoExt(hdrset[0]) + "-" + getNumberSuffix(hdrset[len(hdrset)-1])
 
 def getOutputPath(hdrset):
 	return getDirName(hdrset[0])
